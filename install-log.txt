@@ -16,6 +16,7 @@ client
 - yup
 - storybook
 - uuid
+- file-saver
 
 add this line to client >> package.json
 "proxy": "http://localhost:5000"
@@ -29,5 +30,6 @@ npm init -y
 - config
 - dotenv ?
 - cors ?
+- html-pdf
 
 

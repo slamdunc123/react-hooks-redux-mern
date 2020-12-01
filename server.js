@@ -2,6 +2,10 @@ const express = require('express');
 const conn = require('./config/db');
 const path = require('path');
 
+const pdf = require('html-pdf');
+
+const pdfTemplate = require('./documents/htmlPdfTemplate');
+
 const app = express();
 
 // connect to database
@@ -17,6 +21,20 @@ app.use(express.json({ extended: false }));
 app.use('/api/items', require('./routes/api/items')); //localhost:5000/api/items
 app.use('/api/auth', require('./routes/api/auth')); // http://localhost:5000/api/auth
 app.use('/api/users', require('./routes/api/users')); // http://localhost:5000/api/users
+
+app.post('/create-pdf', (req, res) => {
+	pdf.create(pdfTemplate(req.body), {}).toFile('result.pdf', (err) => {
+		if (err) {
+			res.send(Promise.reject());
+		}
+
+		res.send(Promise.resolve());
+	});
+});
+
+app.get('/fetch-pdf', (req, res) => {
+	res.sendFile(`${__dirname}/result.pdf`);
+});
 
 // serve static assets in production
 if (process.env.NODE_ENV === 'production') {
